@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import {  onMounted, ref } from 'vue';
 
 const el = ref<HTMLCanvasElement>()
 
@@ -25,7 +25,7 @@ function init(){
   const branch:Branch = {
     start:{ x:WIDTH /2,y:HEIGHT},
     length:40,
-    theta:-Math.PI / 2
+    theta:- Math.PI / 2
   }
   step(branch)
   // lineTo(startPoint,endPoint)
@@ -33,43 +33,54 @@ function init(){
   
 }
 
+// 把所有step 添加到pending 等待执行
+let pendingTasks: Function[] = []
 
-function step(b:Branch){
+// 动画
+function frame() {
+  // 浅拷贝一下pendingTasks
+  const tasks = [...pendingTasks]
+  pendingTasks.length = 0
+  tasks.forEach(fn => {
+    fn()
+  } )
+}
+
+// 通过requestAnimationFrame去执行frame（递归一下
+let framCount = 0
+function startFrame(){
+  requestAnimationFrame(() => {
+    framCount += 1
+    if(framCount % 10 ){
+      frame()
+      startFrame()
+    }
+  })
+  
+}
+
+function step(b:Branch,depth=0){
   const end = getBranch(b)
   drawBranch(b)
-  const endPoint = {
-    x:WIDTH/2,
-    y:HEIGHT/2
+  if(depth < 4 || Math.random() < 0.5){
+    // 添加pending
+    pendingTasks.push(() => 
+      step({
+        start: end,
+        length: b.length +( Math.random() * 10 - 5),
+        theta: b.theta - 0.4 * Math.random()
+      })
+    )
   }
-  if(Math.random() < 0.5){
-    step( {
-      start: end,
-      length: b.length,
-      theta: b.theta - 0.2
-    })
+  if (depth < 4 || Math.random() < 0.5){
+    pendingTasks.push(() => 
+      step({
+        start: end,
+        length: b.length + (Math.random() * 10 - 5),
+        theta: b.theta + 0.4 * Math.random()
+      })
+    )
   }
-  if(Math.random() < 0.5){
-    step({
-      start: end,
-      length: b.length,
-      theta: b.theta + 0.2
-    })
-  }
-
-  // let leftPoint = {
-  //   start: end,
-  //   length: 100,
-  //   theta: b.theta - 0.1
-  // }
-
-  // drawBranch(leftPoint)
-
-  // let rightPoint = {
-  //   start: end,
-  //   length: 100,
-  //   theta: b.theta + 0.1
-  // }
-  // drawBranch(rightPoint)
 }
 
 function lineTo(p1:Point,p2:Point){
@@ -91,21 +102,36 @@ function getBranch(b:Branch){
 
 function drawBranch(b:Branch){
   const { start,length,theta } = b
-  // const end = {
-  //   x:start.x +length * Math.cos(theta),
-  //   y:start.y +length * Math.sin(theta),
-  // }
   lineTo(start,getBranch(b))
 }
 
 onMounted(() => {
-  init()
+  let num = 0;
+  let timer =  setInterval(() => {
+    const canvas = el.value!
+    const ctx = canvas.getContext('2d')!
+    ctx.clearRect(0, 0, WIDTH, HEIGHT)
+    pendingTasks.length = 0
+    num +=1;
+    if(num >= 5) {
+      clearInterval(timer)
+    }
+    init()
+    startFrame() 
+  }, 2000);
+
+ 
+  // haha.value?.innerHTML = res
 })
+
+
 </script>
 
 <template>
-    <canvas ref="el" width="500" height="500 " style="border: 1px solid #fff"></canvas>
+    <canvas ref="el" width="600" height="600" style="border: 1px solid #fff"></canvas>
     <div>hi</div>
+
+    <div id="test" ></div>
 </template>
 
 <style scoped>
