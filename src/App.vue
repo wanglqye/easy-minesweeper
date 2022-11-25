@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Plum  from '.Plum.vue'
+import Plum  from './components/Plum.vue'
 </script>
 
 <template>
