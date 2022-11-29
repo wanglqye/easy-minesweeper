@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Plum  from './components/Plum.vue'
-import MineSweeperVue from './components/MineSweeper.vue';
-import SweepStaktesVue from './components/SweepStaktes.vue';
+import MineSweeper from './components/MineSweeper.vue';
+import SweepStaktes from './components/SweepStakes.vue';
 </script>
 
 <template>
     <!-- <Plum /> -->
-    <!-- <MineSweeperVue /> -->
-    <SweepStaktesVue />
+    <!-- <MineSweeper /> -->
+    <SweepStaktes />
     <div>hi</div>
 </template>
 

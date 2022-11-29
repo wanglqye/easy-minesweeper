@@ -32,8 +32,45 @@ prizeActiveState.value= data.reduce((pre,cur) => {
     }
 },{},)
 
+// const calCustomProbabilityIndex = (data) => {
+//     const handleData = data;
+//     let tempArr: number[] = [];
+//     const notHandleItems = [];
+//     let surplus = 1;
+
+//     for (let i = 0; i < handleData.length; i++) {
+//         if (handleData[i].probability === 0) continue;
+//         if (handleData[i].probability) {
+//             surplus = surplus - (handleData[i].probability as number);
+//             tempArr = [
+//                 ...tempArr,
+//                 ...Array(
+//                     Math.floor((handleData[i].probability as number) * 100),
+//                 ).fill(i),
+//             ];
+//         } else {
+//             notHandleItems.push(i);
+//         }
+//     }
+
+//     if (surplus > 0) {
+//         notHandleItems.forEach((item) => {
+//             tempArr = [
+//                 ...tempArr,
+//                 ...Array(
+//                     Math.floor(Math.floor((surplus / notHandleItems.length) * 100)),
+//                 ).fill(item),
+//             ];
+//         });
+//     }
+
+//     return tempArr[Math.floor(Math.random() * tempArr.length)];
+// };
+
+
 // 整个开关
 let flag = ref(true)
+// let luckyRewardsValue = calCustomProbabilityIndex(data);
 
 const start = (id:string | number) => {
     console.log('flag', flag.value)
@@ -42,13 +79,11 @@ const start = (id:string | number) => {
     if(!flag.value) return;
     flag.value = false
 
-
-
     // 顺时针
     const path = [0, 1, 2, 4, 7, 6, 5, 3];
     let curIndex = 0;
     let stop = false;
-    const luckyRewardsIndex = Math.floor(Math.random() * path.length);
+    const luckyRewardsIndex =  Math.floor(Math.random() * path.length);
     setTimeout(() => {
         stop = true;
     }, 3000);
@@ -82,6 +117,7 @@ const start = (id:string | number) => {
     console.log(prizeActiveState)
 
 }
+
 
 
 </script>

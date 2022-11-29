@@ -1,22 +1,22 @@
 export default [{
         id: 1,
         name: '代金券1',
-        probability: 0.5,
+        probability: 0.1,
     },
     {
         id: 2,
-        name: '代金券2', 
-        probability: 0.5,
+        name: '代金券2',
+        probability: 0.1,
     },
     {
         id: 3,
         name: '代金券3',
-        probability: 0.5,
+        probability: 0.1,
     },
     {
         id: 4,
         name: '代金券4',
-        probability: 0.5,
+        probability: 0.9,
     },
     {
         id: 5,
